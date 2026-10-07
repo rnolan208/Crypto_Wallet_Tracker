@@ -20,7 +20,7 @@ walletForm.addEventListener("submit", function (event) {
 
     console.log(walletAddress);
 
-    const apiUrl = "http://127.0.0.1:5000/api/wallet/" + walletAddress;
+    const apiUrl = "https://crypto-wallet-tracker-3i7z.onrender.com/api/wallet/" + walletAddress;
     console.log(apiUrl);
 
     fetch(apiUrl)
