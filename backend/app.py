@@ -1,7 +1,9 @@
 import requests
 from dotenv import load_dotenv
 import os
+from flask import Flask
 
+app = Flask(__name__)
 
 load_dotenv()
 
@@ -50,15 +52,48 @@ def get_eth_balance(wallet_address):
     return balance_eth
 
 
-wallet_address = "0x80ed97ff038cAe9be7D9132347B9a3128D5f09fC"
+@app.route("/")
+def home():
+    return "Crypto Wallet Tracker API"
 
-current_price = get_eth_price()
+@app.route("/api/wallet/<wallet_address>")
+def wallet(wallet_address):
 
-eth_balance = get_eth_balance(wallet_address)
+    if not wallet_address.startswith("0x") or len(wallet_address) != 42:
 
-wallet_valve = eth_balance * current_price
+        return {
+            "error": "Invalid Ethereum wallet address"
+        }
 
-print(f"Current Ethereum price: €{current_price:.2f}")
-print(f"Current wallet address: {wallet_address}")
-print(f"Current ETH balance: {eth_balance} ETH")
-print(f"Current wallet value: €{wallet_valve:.2f}")
+    current_price = get_eth_price()
+
+    eth_balance = get_eth_balance(wallet_address)
+
+    wallet_value = eth_balance * current_price
+
+    return {
+        "wallet_address": wallet_address,
+        "eth_balance" : eth_balance,
+        "wallet_value" : wallet_value,
+        "eth_price_eur" : current_price
+    }
+
+if __name__ == "__main__":
+    app.run()
+
+
+
+# OLD TESTING CODE
+
+#wallet_address = "0x80ed97ff038cAe9be7D9132347B9a3128D5f09fC"
+
+#current_price = get_eth_price()
+
+#eth_balance = get_eth_balance(wallet_address)
+
+#wallet_value = eth_balance * current_price
+
+#print(f"Current Ethereum price: €{current_price:.2f}")
+#print(f"Current wallet address: {wallet_address}")
+#print(f"Current ETH balance: {eth_balance} ETH")
+#print(f"Current wallet value: €{wallet_value:.2f}")
