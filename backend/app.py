@@ -88,7 +88,9 @@ def wallet(wallet_address):
 
         wallet_value = eth_balance * current_price
 
-    except (requests.RequestException, KeyError, ValueError):
+    except (requests.RequestException, KeyError, ValueError) as error:
+        print(f"Wallet API error: {error}")
+
         return {
             "error": "Unable to retrieve wallet data"
         }
