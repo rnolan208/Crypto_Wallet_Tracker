@@ -10,10 +10,11 @@ CORS(app)
 load_dotenv()
 
 alchemy_url = os.getenv("ALCHEMY_URL")
+coingecko_api_key = os.getenv("COINGECKO_API_KEY")
 
 
 # retrieve the live ETH price
-def get_eth_price():
+def get_eth_price():    
 
     url = "https://api.coingecko.com/api/v3/simple/price"
 
@@ -22,7 +23,11 @@ def get_eth_price():
         "vs_currencies" : "eur"
     }
 
-    response = requests.get(url, params=params, timeout=10)
+    headers = {
+        "x-cg-demo-api-key": coingecko_api_key
+    }
+
+    response = requests.get(url, params=params, headers=headers, timeout=10)
 
     response.raise_for_status()
 
