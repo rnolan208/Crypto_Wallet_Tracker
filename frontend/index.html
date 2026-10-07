@@ -9,33 +9,45 @@
         Crypto Wallet Tracker
     </title>
 
+    <link rel="stylesheet" href="css/styles.css">
+
 </head>
 
 <body>
 
-    <h1>
-        Crypto Wallet Tracker
-    </h1>
+    <main class="app-container">
 
-    <label for="wallet-address">
-        Ethereum Wallet Address
-    </label>
+        <h1>
+            Crypto Wallet Tracker
+        </h1>
 
-    <input id="wallet-address" type="text" placeholder="0x...">
+        <form class="wallet-form" id="wallet-form">
+            <label for="wallet-address">
+                Ethereum Wallet Address
+            </label>
 
-    <button id="track-wallet">Track Wallet</button>
+            <div class="input-group">
+                <input id="wallet-address" type="text" placeholder="0x...">
 
-    <p id="error-message"></p>
+                <button id="track-wallet">Track Wallet</button>
+            </div>
+        </form>
 
-    <div id="wallet-results">
-        <h2>Wallet Details</h2>
+        <p id="error-message"></p>
 
-        <p>ETH Balance: <span id="eth-balance">--</span> ETH</p>
+        <div id="loading-spinner" class="spinner"></div>
 
-        <p>ETH Price: €<span id="eth-price">--</span></p>
+        <div id="wallet-results">
+            <h2>Wallet Details</h2>
 
-        <p>Wallet Value: €<span id="wallet-value">--</span></p>
-    </div>
+            <p>ETH Balance: <span id="eth-balance">--</span> ETH</p>
+
+            <p>ETH Price: €<span id="eth-price">--</span></p>
+
+            <p>Wallet Value: €<span id="wallet-value">--</span></p>
+        </div>
+
+    </main>
 
     <script src="js/app.js"></script>
 </body>
