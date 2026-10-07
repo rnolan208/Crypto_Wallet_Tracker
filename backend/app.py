@@ -22,7 +22,9 @@ def get_eth_price():
         "vs_currencies" : "eur"
     }
 
-    response = requests.get(url, params=params)
+    response = requests.get(url, params=params, timeout=10)
+
+    response.raise_for_status()
 
     data = response.json()
 
@@ -41,7 +43,9 @@ def get_eth_balance(wallet_address):
         "id" : 1
     }
 
-    response = requests.post(alchemy_url, json=payload)
+    response = requests.post(alchemy_url, json=payload, timeout=10)
+
+    response.raise_for_status()
 
     data = response.json()
 
@@ -67,11 +71,27 @@ def wallet(wallet_address):
             "error": "Invalid Ethereum wallet address"
         }
 
-    current_price = get_eth_price()
+    address_hex = wallet_address[2:]
 
-    eth_balance = get_eth_balance(wallet_address)
+    try: 
+        int(address_hex, 16)
 
-    wallet_value = eth_balance * current_price
+    except ValueError:
+        return {
+            "error": "Invalid Ethereum wallet address"
+        }
+
+    try:
+        current_price = get_eth_price()
+
+        eth_balance = get_eth_balance(wallet_address)
+
+        wallet_value = eth_balance * current_price
+
+    except (requests.RequestException, KeyError, ValueError):
+        return {
+            "error": "Unable to retrieve wallet data"
+        }
 
     return {
         "wallet_address": wallet_address,
